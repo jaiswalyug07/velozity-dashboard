@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PROJECT_MANAGER
+  DEVELOPER
+}
+
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ActivityType {
+  PROJECT_CREATED
+  TASK_CREATED
+  TASK_ASSIGNED
+  TASK_STATUS_CHANGED
+  TASK_OVERDUE
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  TASK_IN_REVIEW
+  TASK_OVERDUE
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  managedProjects Project[]      @relation("ProjectManager")
+  assignedTasks   Task[]         @relation("TaskAssignee")
+  activityEvents  ActivityEvent[] @relation("ActivityActor")
+  notifications   Notification[] @relation("NotificationUser")
+  createdNotifications Notification[] @relation("NotificationActor")
+}
+
+model Client {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  company     String?
+  contactEmail String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  projects Project[]
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  clientId    Int
+  managerId   Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  client  Client @relation(fields: [clientId], references: [id])
+  manager User   @relation("ProjectManager", fields: [managerId], references: [id])
+
+  tasks      Task[]
+  activities ActivityEvent[]
+  notifications Notification[]
+
+  @@index([managerId])
+  @@index([clientId])
+}
+
+model Task {
+  id           Int          @id @default(autoincrement())
+  title        String
+  description  String?
+  projectId    Int
+  assignedToId Int?
+  status       TaskStatus   @default(TO_DO)
+  priority     TaskPriority @default(MEDIUM)
+  dueDate      DateTime
+  isOverdue    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  project     Project          @relation(fields: [projectId], references: [id])
+  assignedTo  User?            @relation("TaskAssignee", fields: [assignedToId], references: [id])
+  activities  ActivityEvent[]
+  notifications Notification[]
+
+  @@index([projectId])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([priority])
+  @@index([dueDate])
+}
+
+model ActivityEvent {
+  id        Int          @id @default(autoincrement())
+  actorId   Int
+  projectId Int
+  taskId    Int?
+  type      ActivityType
+  message   String
+  createdAt DateTime     @default(now())
+
+  actor   User    @relation("ActivityActor", fields: [actorId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+  task    Task?   @relation(fields: [taskId], references: [id])
+
+  @@index([projectId, createdAt])
+  @@index([actorId, createdAt])
+  @@index([taskId, createdAt])
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  actorId   Int?
+  projectId Int?
+  taskId    Int?
+  type      NotificationType
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user    User   @relation("NotificationUser", fields: [userId], references: [id])
+  actor   User?  @relation("NotificationActor", fields: [actorId], references: [id])
+  project Project? @relation(fields: [projectId], references: [id])
+  task    Task?  @relation(fields: [taskId], references: [id])
+
+  @@index([userId, isRead, createdAt])
+}
