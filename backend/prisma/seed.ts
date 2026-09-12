@@ -27,7 +27,7 @@ async function main() {
     data: { email: "pm2@velozity.com", name: "Ravi Manager", passwordHash: await hash("Pm@1234"), role: Role.PROJECT_MANAGER },
   });
   const dev1 = await prisma.user.create({
-    data: { email: "dev1@velozity.com", name: "Divya Developer", passwordHash: await hash("Dev@1234"), role: Role.DEVELOPER },
+    data: { email: "dev1@velozity.com", name: "Yug Jaiswal", passwordHash: await hash("Dev@1234"), role: Role.DEVELOPER },
   });
   const dev2 = await prisma.user.create({
     data: { email: "dev2@velozity.com", name: "Dev Kumar", passwordHash: await hash("Dev@1234"), role: Role.DEVELOPER },
@@ -37,9 +37,6 @@ async function main() {
   });
   const dev4 = await prisma.user.create({
     data: { email: "dev4@velozity.com", name: "Dana Devastator", passwordHash: await hash("Dev@1234"), role: Role.DEVELOPER },
-  });
-  const yug = await prisma.user.create({
-    data: { email: "yug@velozity.com", name: "Yug Jaiswal", passwordHash: await hash("Yug@1234"), role: Role.ADMIN },
   });
 
   console.log("Users created.");
@@ -208,13 +205,11 @@ async function main() {
   console.log("\n┌─────────────────────────────────────┐");
   console.log("│  Seed complete ✔                    │");
   console.log("│  Admin: admin@velozity.com/Admin@1234│");
-  console.log("│  Admin: yug@velozity.com/Yug@1234     │");
   console.log("│  PM1:   pm1@velozity.com/Pm@1234     │");
   console.log("│  PM2:   pm2@velozity.com/Pm@1234     │");
   console.log("│  Devs:  dev1..4@velozity.com/Dev@1234│");
   console.log("└─────────────────────────────────────┘");
   void admin;
-  void yug;
 }
 
 main()
