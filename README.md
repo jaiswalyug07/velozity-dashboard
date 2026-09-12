@@ -13,7 +13,7 @@ Real-time client project dashboard with **role-based access**, a **live activity
 
 Hosting: frontend built with `VITE_API_URL`/`VITE_WS_URL` → the Render backend; Render runs the same Docker image as local via `render.yaml` (blueprint: `velozity-backend` web service + free Postgres `velozity-db`, `CLIENT_URL` = Vercel origin for Socket.IO CORS). Free-tier tips: Render spins down after ~15 min idle (first request after sleep can take ~30–60s); the cron/overdue job resumes once the instance wakes.
 
-Demo logins — **admin@velozity.com / Admin@1234**, **yug@velozity.com / Yug@1234** (Admins); **pm1@velozity.com / Pm@1234** & **pm2@velozity.com / Pm@1234** (PMs); **dev1–dev4@velozity.com / Dev@1234** (Developers).
+Demo logins — **yug@velozity.com / Yug@1234** (Admin), **pm1@velozity.com / Pm@1234** & **pm2@velozity.com / Pm@1234** (PMs), **dev1–dev4@velozity.com / Dev@1234** (Developers).
 
 ## Features
 
