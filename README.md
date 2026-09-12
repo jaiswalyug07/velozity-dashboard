@@ -4,6 +4,17 @@ Real-time client project dashboard with **role-based access**, a **live activity
 
 > **Roles** · Admin sees everything, Project Managers manage their own projects, Developers see only tasks assigned to them. Access is enforced **server-side on every route** (a Developer cannot reach a PM's data even with a forged token).
 
+## Live deployment
+
+| Piece | URL |
+| --- | --- |
+| **Frontend (Vercel)** | https://frontend-one-psi-78.vercel.app |
+| **Backend API · WebSocket (Render)** | https://velozity-backend-7c25.onrender.com |
+
+Hosting: frontend built with `VITE_API_URL`/`VITE_WS_URL` → the Render backend; Render runs the same Docker image as local via `render.yaml` (blueprint: `velozity-backend` web service + free Postgres `velozity-db`, `CLIENT_URL` = Vercel origin for Socket.IO CORS). Free-tier tips: Render spins down after ~15 min idle (first request after sleep can take ~30–60s); the cron/overdue job resumes once the instance wakes.
+
+Demo logins — **admin@velozity.com / Admin@1234** (all), **pm1@velozity.com / Pm@1234** & **pm2@velozity.com / Pm@1234** (PMs), **dev1–dev4@velozity.com / Dev@1234** (Developers).
+
 ## Features
 
 | Area | What it does |
