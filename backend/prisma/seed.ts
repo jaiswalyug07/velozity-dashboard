@@ -38,6 +38,9 @@ async function main() {
   const dev4 = await prisma.user.create({
     data: { email: "dev4@velozity.com", name: "Dana Devastator", passwordHash: await hash("Dev@1234"), role: Role.DEVELOPER },
   });
+  const yug = await prisma.user.create({
+    data: { email: "yug@velozity.com", name: "Yug Jaiswal", passwordHash: await hash("Yug@1234"), role: Role.ADMIN },
+  });
 
   console.log("Users created.");
 
@@ -205,11 +208,13 @@ async function main() {
   console.log("\n┌─────────────────────────────────────┐");
   console.log("│  Seed complete ✔                    │");
   console.log("│  Admin: admin@velozity.com/Admin@1234│");
+  console.log("│  Admin: yug@velozity.com/Yug@1234     │");
   console.log("│  PM1:   pm1@velozity.com/Pm@1234     │");
   console.log("│  PM2:   pm2@velozity.com/Pm@1234     │");
   console.log("│  Devs:  dev1..4@velozity.com/Dev@1234│");
   console.log("└─────────────────────────────────────┘");
   void admin;
+  void yug;
 }
 
 main()

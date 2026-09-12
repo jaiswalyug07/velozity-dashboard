@@ -52,6 +52,7 @@ export default function LoginPage() {
             <summary>Demo credentials</summary>
             <ul>
               <li><strong>Admin:</strong> admin@velozity.com / Admin@1234</li>
+              <li><strong>Admin (Yug):</strong> yug@velozity.com / Yug@1234</li>
               <li><strong>PM:</strong> pm1@velozity.com / Pm@1234</li>
               <li><strong>Dev:</strong> dev1@velozity.com / Dev@1234</li>
             </ul>
